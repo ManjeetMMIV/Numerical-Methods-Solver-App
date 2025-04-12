@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modified Euler's Method | Numerical Analysis</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #f3f4f6;
+            --text-color: #1f2937;
+            --text-light: #4b5563;
+            --accent-color: #fbbf24;
+            --error-color: #ef4444;
+            --success-color: #10b981;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f9fafb;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+        
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+        
+        nav ul li a:hover {
+            opacity: 0.8;
+        }
+        
+        .hero {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background-color: white;
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        section {
+            padding: 2rem 0;
+        }
+        
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin: 1.5rem 0 1rem;
+            color: var(--text-color);
+        }
+        
+        p {
+            margin-bottom: 1rem;
+        }
+        
+        .formula {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+        }
+        
+        .formula img {
+            display: block;
+            margin: 1rem auto;
+            max-width: 100%;
+        }
+        
+        .formula-text {
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 1.2rem;
+            text-align: center;
+            margin: 1rem 0;
+        }
+        
+        .algorithm {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+        
+        .algorithm ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .algorithm li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .problems {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .problem-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .problem-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .problem-card h3 {
+            color: var(--primary-color);
+        }
+        
+        .problem-card .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+        
+        .problem-card .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .matlab-code {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        pre {
+            white-space: pre-wrap;
+        }
+        
+        code {
+            font-family: monospace;
+        }
+        
+        .solver-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .footer {
+            background-color: var(--text-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer h3 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        .footer a {
+            color: #d1d5db;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer a:hover {
+            color: white;
+        }
+        
+        .footer ul {
+            list-style: none;
+        }
+        
+        .footer li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            border-top: 1px solid #374151;
+            padding-top: 1rem;
+            text-align: center;
+            color: #9ca3af;
+        }
+        
+        /* Solver Styles */
+        #solver {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 24px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .icon {
+            width: 24px;
+            height: 24px;
+            color: var(--primary-color);
+        }
+        
+        .space-y-4 > * {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            font-size: 14px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        button {
+            width: 100%;
+            padding: 8px 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+        }
+        
+        .error {
+            padding: 16px;
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border-radius: 6px;
+            margin-top: 16px;
+        }
+        
+        .solution {
+            margin-top: 24px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            min-width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        thead {
+            background-color: #f9fafb;
+        }
+        
+        th {
+            padding: 12px 24px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        
+        td {
+            padding: 16px 24px;
+            white-space: nowrap;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            width: auto;
+            color: var(--text-light);
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .tab:hover {
+            color: var(--primary-color);
+            background-color: transparent;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .solution-steps {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background-color: #f9fafb;
+            border-radius: 8px;
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 0.75rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">NumericalMethods</div>
+            <nav>
+                <ul>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#formula">Formula</a></li>
+                    <li><a href="#problems">Problems</a></li>
+                    <li><a href="#solver">Solver</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Modified Euler's Method</h1>
+            <p>An improved numerical technique for solving ordinary differential equations (ODEs) with greater accuracy and stability compared to the standard Euler method.</p>
+            <a href="#solver" class="btn">Try the Solver</a>
+        </div>
+    </section>
+
+    <main class="container">
+        <section id="introduction">
+            <h2>Introduction to Modified Euler's Method</h2>
+            <p>The Modified Euler's Method, also known as the Heun's Method, is a numerical technique used to solve ordinary differential equations (ODEs). It is a predictor-corrector method that improves upon the standard Euler method by using an averaged slope to update the solution.</p>
+            
+            <p>While the standard Euler method uses only the slope at the beginning of the interval to approximate the solution, the Modified Euler's method uses an average of the slopes at the beginning and end of the interval. This results in a more accurate approximation, especially for problems with rapidly changing rates.</p>
+            
+            <p>The Modified Euler's method is a second-order Runge-Kutta method, which means it has an error term of order h², where h is the step size. This makes it significantly more accurate than the standard Euler method, which has an error term of order h.</p>
+        </section>
+
+        <section id="formula">
+            <h2>Mathematical Formula</h2>
+            <div class="formula">
+                <p>For a first-order ODE of the form:</p>
+                <div class="formula-text">
+                    dy/dx = f(x, y)
+                </div>
+                <p>with initial condition y(x₀) = y₀, the Modified Euler's method computes the solution at x_{n+1} as follows:</p>
+                <div class="formula-text">
+                    k₁ = f(xₙ, yₙ)<br>
+                    yₚᵣₑᵈ = yₙ + h·k₁<br>
+                    k₂ =                     = f(xₙ₊₁, yₚᵣₑᵈ)<br>
+                    yₙ₊₁ = yₙ + h/2 · (k₁ + k₂)
+                </div>
+                <p>Where:</p>
+                <ul>
+                    <li><strong>h</strong> is the step size.</li>
+                    <li><strong>k₁</strong> is the slope at the beginning of the interval.</li>
+                    <li><strong>k₂</strong> is the slope at the end of the interval (predicted).</li>
+                    <li><strong>yₚᵣₑᵈ</strong> is the predicted value of y at the next step.</li>
+                    <li><strong>yₙ₊₁</strong> is the corrected value of y at the next step.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="problems">
+            <h2>Relevant Problems and Mathematical Significance</h2>
+            <div class="problems">
+                <div class="problem-card">
+                    <h3>1. Exponential Growth and Decay</h3>
+                    <p>Solve dy/dx = ky, where k is a constant. This equation models population growth, radioactive decay, and interest calculations.</p>
+                    <p>Sample Values of k : 0.05 </p>
+                    <a href="#solver" class="btn">Solve Example</a>
+                </div>
+                <div class="problem-card">
+                    <h3>2. Harmonic Oscillator</h3>
+                    <p>Solve dy/dx = -ω²y, which describes simple harmonic motion in physics, such as springs and pendulums.</p>
+                    <p>Sample Values : k = 10N/m, m = 1kg, w = 5rad/s</p>
+                    <a href="#solver" class="btn">Solve Example</a>
+                </div>
+                <div class="problem-card">
+                    <h3>3. Logistic Growth</h3>
+                    <p>Solve dy/dx = ry(1 - y/K), where r is the growth rate and K is the carrying capacity. This models population growth with limited resources.</p>
+                    <p>Sample Values : r = 0.01, K = 10^9</p>
+                    <a href="#solver" class="btn">Solve Example</a>
+                </div>
+                <div class="problem-card">
+                    <h3>4. Cooling of an Object</h3>
+                    <p>Solve dy/dx = -k(y - T), where T is the ambient temperature. This describes Newton's law of cooling.</p>
+                    <p>Sample Values : k = 0.1 per minute, T = 25 degree C</p>
+                    <a href="#solver" class="btn">Solve Example</a>
+                </div>
+                <div class="problem-card">
+                    <h3>5. Electrical Circuits</h3>
+                    <p>Solve dy/dx = -RC·y + V, which models the voltage across a capacitor in an RC circuit.</p>
+                    <p>R = 100Ohms, C = 1uF, V = 1V</p>
+                    <a href="#solver" class="btn">Solve Example</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="solver" class="solver-section">
+            <h2>Numerical Solver</h2>
+            <div id="solver">
+                <div class="header">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v18h18"></path>
+                        <path d="m19 9-5 5-4-4-3 3"></path>
+                    </svg>
+                    <h2>Numerical Solver</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="equation">Differential Equation (dy/dx =)</label>
+                        <input type="text" id="equation" value="x + y" placeholder="e.g., x + y">
+                    </div>
+
+                    <div class="grid">
+                        <div>
+                            <label for="x0">Initial x</label>
+                            <input type="number" id="x0" value="0">
+                        </div>
+                        <div>
+                            <label for="y0">Initial y</label>
+                            <input type="number" id="y0" value="1">
+                        </div>
+                        <div>
+                            <label for="h">Step size (h)</label>
+                            <input type="number" id="h" value="0.1" step="0.1" min="0.01">
+                        </div>
+                        <div>
+                            <label for="steps">Number of steps</label>
+                            <input type="number" id="steps" value="10" min="1">
+                        </div>
+                        <div>
+                            <label for="m">Number of Modifications</label>
+                            <input type="number" id="m" value="10" min="1">
+                        </div>
+                    </div>
+
+                    <button id="solve-btn">Solve</button>
+
+                    <div id="error" class="error" style="display: none;"></div>
+
+                    <div id="solution" class="solution" style="display: none;">
+                        <h3>Solution</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Step</th>
+                                        <th>x</th>
+                                        <th>y</th>
+                                        <th>k1</th>
+                                        <th>k2</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="solution-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    
+
+    <script>
+       document.addEventListener('DOMContentLoaded', function () {
+    const equationInput = document.getElementById('equation');
+    const x0Input = document.getElementById('x0');
+    const y0Input = document.getElementById('y0');
+    const hInput = document.getElementById('h');
+    const stepsInput = document.getElementById('steps');
+    const solveBtn = document.getElementById('solve-btn');
+    const errorDiv = document.getElementById('error');
+    const solutionDiv = document.getElementById('solution');
+    const solutionBody = document.getElementById('solution-body');
+
+    // Evaluate function safely
+    function evaluateFunction(x, y, expr) {
+        try {
+            return new Function('x', 'y', `return (${expr})`)(x, y);
+        } catch (e) {
+            throw new Error("Invalid equation");
+        }
+    }
+
+    // Solve differential equation using Modified Euler's method
+    function solve() {
+        try {
+            const equation = equationInput.value;
+            const x0 = parseFloat(x0Input.value);
+            const y0 = parseFloat(y0Input.value);
+            const h = parseFloat(hInput.value);
+            const steps = parseInt(stepsInput.value);
+            const modifications = parseInt(document.getElementById("m").value); // Get modification count
+
+            if (isNaN(x0) || isNaN(y0) || isNaN(h) || isNaN(steps) || isNaN(modifications) || h <= 0 || steps < 1 || modifications < 1) {
+                throw new Error("Invalid input parameters");
+            }
+
+            const solutions = [];
+            let x = x0;
+            let y = y0;
+
+            solutions.push({
+                x,
+                y,
+                slope1: evaluateFunction(x, y, equation),
+                slope2: 0
+            });
+
+            for (let i = 0; i < steps; i++) {
+                let yNew = y;
+
+                for (let modCount = 0; modCount < modifications; modCount++) { // Apply modifications
+                    const k1 = evaluateFunction(x, yNew, equation);
+                    const yPred = yNew + h * k1;
+                    const k2 = evaluateFunction(x + h, yPred, equation);
+
+                    let yNext = y + (h / 2) * (k1 + k2); // Compute next step
+
+                    // Stop early if modification converges
+                    if (Math.abs(yNext - yNew) < 1e-6) break;
+
+                    yNew = yNext; // Update yNew for next modification
+                }
+
+                y = yNew;
+                x = x + h; // Move to the next step
+
+                solutions.push({
+                    x,
+                    y,
+                    slope1: evaluateFunction(x, y, equation),
+                    slope2: evaluateFunction(x, yNew, equation)
+                });
+            }
+
+            displaySolution(solutions);
+            errorDiv.style.display = 'none';
+        } catch (e) {
+            errorDiv.textContent = "Error solving equation. Please check your input.";
+            errorDiv.style.display = 'block';
+            solutionDiv.style.display = 'none';
+        }
+    }
+
+    // Display solution in table
+    function displaySolution(solutions) {
+        solutionBody.innerHTML = '';
+
+        solutions.forEach((point, index) => {
+            const row = document.createElement('tr');
+
+            const stepCell = document.createElement('td');
+            stepCell.textContent = index;
+
+            const xCell = document.createElement('td');
+            xCell.textContent = point.x.toFixed(4);
+
+            const yCell = document.createElement('td');
+            yCell.textContent = point.y.toFixed(4);
+
+            const k1Cell = document.createElement('td');
+            k1Cell.textContent = point.slope1.toFixed(4);
+
+            const k2Cell = document.createElement('td');
+            k2Cell.textContent = point.slope2.toFixed(4);
+
+            row.appendChild(stepCell);
+            row.appendChild(xCell);
+            row.appendChild(yCell);
+            row.appendChild(k1Cell);
+            row.appendChild(k2Cell);
+
+            solutionBody.appendChild(row);
+        });
+
+        solutionDiv.style.display = 'block';
+    }
+
+    // Event listeners
+    solveBtn.addEventListener('click', solve);
+});
+
+    </script>
+</body>
+</html>
