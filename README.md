@@ -1,4 +1,4 @@
- SNumerical Methods Solver Web App
+ Numerical Methods Solver Web App
 This project is a web-based calculator that allows users to numerically solve ordinary differential equations (ODEs) using the Modified Euler Method. Built entirely with HTML, CSS, and JavaScript, it runs completely in the browser—no libraries or backend dependencies required.
 
 ⚙️ Features
