@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modified Euler's Method | Numerical Analysis</title>
+    <!-- <style>
+       
+    </style> -->
+     <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">NumericalMethods</div>
+            <nav>
+                <ul>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#formula">Formula</a></li>
+                    <li><a href="#problems">Problems</a></li>
+                    <li><a href="#solver">Solver</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Modified Euler's Method</h1>
+            <p>An improved numerical technique for solving ordinary differential equations (ODEs) with greater accuracy and stability compared to the standard Euler method.</p>
+            <a href="#solver" class="btn">Try the Solver</a>
+        </div>
+    </section>
+
+    <main class="container">
+        <section id="introduction">
+            <h2>Introduction to Modified Euler's Method</h2>
+            <p>The Modified Euler's Method, also known as the Heun's Method, is a numerical technique used to solve ordinary differential equations (ODEs). It is a predictor-corrector method that improves upon the standard Euler method by using an averaged slope to update the solution.</p>
+            
+            <p>While the standard Euler method uses only the slope at the beginning of the interval to approximate the solution, the Modified Euler's method uses an average of the slopes at the beginning and end of the interval. This results in a more accurate approximation, especially for problems with rapidly changing rates.</p>
+            
+            <p>The Modified Euler's method is a second-order Runge-Kutta method, which means it has an error term of order h², where h is the step size. This makes it significantly more accurate than the standard Euler method, which has an error term of order h.</p>
+        </section>
+
+        <section id="formula">
+            <h2>Mathematical Formula</h2>
+            <div class="formula">
+                <p>For a first-order ODE of the form:</p>
+                <div class="formula-text">
+                    dy/dx = f(x, y)
+                </div>
+                <p>with initial condition y(x₀) = y₀, the Modified Euler's method computes the solution at x_{n+1} as follows:</p>
+                <div class="formula-text">
+                    k₁ = f(xₙ, yₙ)<br>
+                    yₚᵣₑᵈ = yₙ + h·k₁<br>
+                    k₂ =                     = f(xₙ₊₁, yₚᵣₑᵈ)<br>
+                    yₙ₊₁ = yₙ + h/2 · (k₁ + k₂)
+                </div>
+                <p>Where:</p>
+                <ul>
+                    <li><strong>h</strong> is the step size.</li>
+                    <li><strong>k₁</strong> is the slope at the beginning of the interval.</li>
+                    <li><strong>k₂</strong> is the slope at the end of the interval (predicted).</li>
+                    <li><strong>yₚᵣₑᵈ</strong> is the predicted value of y at the next step.</li>
+                    <li><strong>yₙ₊₁</strong> is the corrected value of y at the next step.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="problems">
+            <h2>Relevant Problems and Mathematical Significance</h2>
+            <div class="problems">
+                <div class="problem-card">
+                    <h3>1. Exponential Growth and Decay</h3>
+                    <p>Solve dy/dx = ky, where k is a constant. This equation models population growth, radioactive decay, and interest calculations.</p>
+                    <p>Sample Values of k : 0.05 </p>
+                    <a href="#solver" class="btn">Solve Example</a>
+                </div>
+                <div class="problem-card">
+                    <h3>2. Harmonic Oscillator</h3>
+                    <p>Solve dy/dx = -ω²y, which describes simple harmonic motion in physics, such as springs and pendulums.</p>
+                    <p>Sample Values : k = 10N/m, m = 1kg, w = 5rad/s</p>
+                    <a href="#solver" class="btn">Solve Example</a>
+                </div>
+                <div class="problem-card">
+                    <h3>3. Logistic Growth</h3>
+                    <p>Solve dy/dx = ry(1 - y/K), where r is the growth rate and K is the carrying capacity. This models population growth with limited resources.</p>
+                    <p>Sample Values : r = 0.01, K = 10^9</p>
+                    <a href="#solver" class="btn">Solve Example</a>
+                </div>
+                <div class="problem-card">
+                    <h3>4. Cooling of an Object</h3>
+                    <p>Solve dy/dx = -k(y - T), where T is the ambient temperature. This describes Newton's law of cooling.</p>
+                    <p>Sample Values : k = 0.1 per minute, T = 25 degree C</p>
+                    <a href="#solver" class="btn">Solve Example</a>
+                </div>
+                <div class="problem-card">
+                    <h3>5. Electrical Circuits</h3>
+                    <p>Solve dy/dx = -RC·y + V, which models the voltage across a capacitor in an RC circuit.</p>
+                    <p>R = 100Ohms, C = 1uF, V = 1V</p>
+                    <a href="#solver" class="btn">Solve Example</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="solver" class="solver-section">
+            <h2>Numerical Solver</h2>
+            <div id="solver">
+                <div class="header">
+                    <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M3 3v18h18"></path>
+                        <path d="m19 9-5 5-4-4-3 3"></path>
+                    </svg>
+                    <h2>Numerical Solver</h2>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label for="equation">Differential Equation (dy/dx =)</label>
+                        <input type="text" id="equation" value="x + y" placeholder="e.g., x + y">
+                    </div>
+
+                    <div class="grid">
+                        <div>
+                            <label for="x0">Initial x</label>
+                            <input type="number" id="x0" value="0">
+                        </div>
+                        <div>
+                            <label for="y0">Initial y</label>
+                            <input type="number" id="y0" value="1">
+                        </div>
+                        <div>
+                            <label for="h">Step size (h)</label>
+                            <input type="number" id="h" value="0.1" step="0.1" min="0.01">
+                        </div>
+                        <div>
+                            <label for="steps">Number of steps</label>
+                            <input type="number" id="steps" value="10" min="1">
+                        </div>
+                        <div>
+                            <label for="m">Number of Modifications</label>
+                            <input type="number" id="m" value="10" min="1">
+                        </div>
+                    </div>
+
+                    <button id="solve-btn">Solve</button>
+
+                    <div id="error" class="error" style="display: none;"></div>
+
+                    <div id="solution" class="solution" style="display: none;">
+                        <h3>Solution</h3>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Step</th>
+                                        <th>x</th>
+                                        <th>y</th>
+                                        <th>k1</th>
+                                        <th>k2</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="solution-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
